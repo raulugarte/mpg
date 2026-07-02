@@ -1,0 +1,102 @@
+.dynamic-media-video {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.dynamic-media-video video {
+  max-width: 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Video.js fluid override — let the container's fixed height govern sizing */
+.dynamic-media-video .video-js.vjs-fluid {
+  padding-top: 0 !important;
+  width: 100%;
+  height: 100%;
+}
+
+.dynamic-media-video[data-video-loaded='false'] {
+  aspect-ratio: 16 / 9;
+  background-color: #f0f0f0;
+}
+
+.dynamic-media-video[data-video-loaded='error'] {
+  aspect-ratio: 16 / 9;
+  background-color: #f8d7da;
+}
+
+.dynamic-media-video-wrapper {
+  text-align: center;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+/*
+ * Smart-crop rendition-based fixed heights
+ * ─────────────────────────────────────────
+ * The DM smart-crop player selects the best rendition for the container size.
+ * Heights below are derived from each rendition's aspect ratio at the
+ * breakpoint's minimum viewport width, keeping the container predictable
+ * and avoiding layout shift.
+ *
+ * Rendition        Ratio   Breakpoint   Height derivation
+ * Widescreen       16:9    ≥1200px      1200 × 9/16 = 675px
+ * Standard          4:3    900–1199px    900 × 3/4  = 675px
+ * Square            1:1    600–899px     600 × 1/1  = 600px
+ * VerticalFeed      4:5    480–599px     480 × 5/4  = 600px
+ * Vertical          9:16   <480px        capped at  600px (avoids overflow)
+ */
+
+/* Widescreen 16:9 — large screens (desktop) */
+@media (min-width: 1200px) {
+  .dynamic-media-video {
+    width: 100%;
+    height: 675px;
+    max-height: 80vh;
+  }
+}
+
+/* Standard 4:3 — medium screens (landscape tablets) */
+@media (min-width: 900px) and (max-width: 1199px) {
+  .dynamic-media-video {
+    width: 100%;
+    height: 675px;
+    max-height: 80vh;
+  }
+}
+
+/* Square 1:1 — small tablets / large phones (landscape) */
+@media (min-width: 600px) and (max-width: 899px) {
+  .dynamic-media-video {
+    width: 100%;
+    height: 620px;
+    max-height: 85vh;
+  }
+}
+
+/* VerticalFeed 4:5 — phones (portrait) */
+@media (min-width: 480px) and (max-width: 599px) {
+  .dynamic-media-video {
+    width: 100%;
+    height: 620px;
+    max-height: 85vh;
+  }
+}
+
+/* Vertical 9:16 — narrow phones */
+@media (max-width: 479px) {
+  .dynamic-media-video {
+    width: 100%;
+    height: 620px;
+    max-height: 85vh;
+  }
+}
