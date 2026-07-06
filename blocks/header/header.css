@@ -158,13 +158,27 @@ header nav[aria-expanded='true'] .nav-hamburger-icon::after {
   }
 }
 
-/* brand */
+/* brand: a plain colored mark + wordmark lockup stands in for the (trademarked)
+   MPG logo, echoing the proportions of a real institute logo without copying it */
 header .nav-brand {
   grid-area: brand;
   flex-basis: 128px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
   font-size: var(--heading-font-size-s);
+  font-family: var(--heading-font-family);
   font-weight: 700;
   line-height: 1;
+}
+
+header .nav-brand:not(:has(img)):not(:has(picture))::before {
+  content: '';
+  display: block;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  background-color: var(--main-accent-color);
 }
 
 .wehealthcare-theme header .nav-brand {
@@ -316,21 +330,11 @@ header nav .nav-sections ul > li > ul > li {
     width: 200px;
     top: 150%;
     padding: 16px;
-    background-color: var(--light-color);
+    background-color: var(--background-color);
+    border: 1px solid rgba(0, 0, 0, .15);
     border-top: 3px solid var(--main-accent-color);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
     white-space: initial;
-  }
-
-  header nav .nav-sections .default-content-wrapper > ul > li > ul::before {
-    content: '';
-    position: absolute;
-    top: -8px;
-    left: 16px;
-    width: 0;
-    height: 0;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-bottom: 8px solid var(--light-color);
   }
 
   header nav .nav-sections .default-content-wrapper > ul > li > ul > li {
@@ -358,7 +362,7 @@ header nav .nav-tools {
   background: transparent;
   color: var(--nav-text-color);
   border: 1px solid var(--nav-text-color);
-  border-radius: 4px;
+  border-radius: 0;
   padding: 4px 8px;
   font-size: 12px;
   cursor: pointer;
@@ -367,10 +371,12 @@ header nav .nav-tools {
   position: absolute;
   right: 0;
   top: calc(100% + 6px);
-  background: var(--light-color);
+  background: var(--background-color);
   color: var(--text-color);
-  border: 1px solid #dadada;
-  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, .15);
+  border-top: 3px solid var(--main-accent-color);
+  border-radius: 0;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
   list-style: none;
   padding: 4px 0;
   margin: 0;
@@ -387,7 +393,7 @@ header nav .nav-tools {
   text-decoration: none;
 }
 .lang-switcher .lang-menu a:hover {
-  background: #f2f2f2;
+  background: #f5f5f5;
 }
 header .search.search-icon .icon {
   width: 24px; height: 24px; background-color: var(--nav-text-color);
