@@ -11,7 +11,8 @@ export default function decorate(block) {
     const styleParagraph = styleDiv?.querySelector('p');
     const cardStyle = styleParagraph?.textContent?.trim() || 'default';
     if (cardStyle && cardStyle !== 'default') {
-      li.className = cardStyle;
+      //li.className = cardStyle;
+      li.classList.add(cardStyle);
     }
     
     // Read CTA style from the fourth div (index 3)

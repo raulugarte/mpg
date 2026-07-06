@@ -458,3 +458,26 @@
   }
   
 }
+
+
+
+/* Card-Hintergrundfarben */
+.cards > ul > li.bg-white { background: #fff; }
+.cards > ul > li.bg-grey  { background: var(--mpg-grey-bg); }
+.cards > ul > li.bg-green { background: var(--mpg-green); }
+.cards > ul > li.bg-dark  { background: var(--mpg-green-dark); }
+
+/* Auf dunklen Flächen: Text und Links weiß, damit's lesbar bleibt */
+.cards > ul > li.bg-green,
+.cards > ul > li.bg-dark {
+  color: #fff;
+}
+.cards > ul > li.bg-green :is(a, h2, h3, h4),
+.cards > ul > li.bg-dark  :is(a, h2, h3, h4) {
+  color: #fff;
+}
+
+/* Etwas Innenabstand, damit die Farbe nicht am Rand klebt */
+.cards > ul > li[class*="bg-"] .cards-card-body {
+  padding: 20px;
+}

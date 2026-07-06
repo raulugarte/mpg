@@ -33,3 +33,4 @@ Install the latest content package from link shared in Quick HowTo document abov
 ## Installation
 1. Just install the content package using CRX package manager. You get a fully working sample site along with a quick site template to build new sites.
 2. To customize and publish to Edge, "Use This Template" option in this repository to create your own repository and update the paths/fstab, etc. as per outlined in the document.
+## Test
