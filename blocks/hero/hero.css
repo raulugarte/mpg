@@ -222,12 +222,15 @@ video.hero-video-bg {
   flex-direction: column-reverse;
 }
 
-/* Image Background Text Left - Text overlaid on background image, left-aligned */
+/* Image Background Text Left - Text overlaid on background image, left-aligned.
+   Bottom-anchored (not vertically centered) to match mpg.de's "hot topic"
+   hero, where the headline card sits at the bottom edge of the photo. */
 .hero.image-background-text-left {
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-end;
   text-align: left;
   padding: 60px 40px;
+  min-height: 600px;
 }
 
 .hero.image-background-text-left > div {
@@ -240,9 +243,10 @@ video.hero-video-bg {
 /* Image Background Text Right - Text overlaid on background image, right-aligned */
 .hero.image-background-text-right {
   justify-content: flex-end;
-  align-items: center;
+  align-items: flex-end;
   text-align: left;
   padding: 60px 40px;
+  min-height: 600px;
 }
 
 .hero.image-background-text-right > div {
@@ -521,6 +525,31 @@ picture {
     text-align: center;
   }
 
+  /* mpg.de un-overlays its "hot topic" hero on mobile: the photo becomes a
+     normal in-flow band and the headline card sits below it full-width,
+     instead of staying text-on-photo. Scoped to Theme Light since that's
+     the card look this mirrors; the plain overlay variants keep the
+     centered on-photo treatment above. */
+  .hero.image-background-text-left.theme-light,
+  .hero.image-background-text-right.theme-light {
+    flex-direction: column;
+    align-items: stretch;
+    min-height: auto;
+    padding: 0;
+  }
+
+  .hero.image-background-text-left.theme-light picture,
+  .hero.image-background-text-right.theme-light picture {
+    position: static;
+    width: 100%;
+    height: 250px;
+  }
+
+  .hero.image-background-text-left.theme-light .hero-text,
+  .hero.image-background-text-right.theme-light .hero-text {
+    max-width: 100%;
+  }
+
   /* Default overlay — constrain text on mobile */
   .hero.block.overlay .hero-text {
     max-width: calc(100% - 32px);
@@ -584,14 +613,34 @@ picture {
 .hero.theme-light h3,
 .hero.theme-light h4,
 .hero.theme-light h5,
-.hero.theme-light h6,
+.hero.theme-light h6 {
+  color: var(--main-accent-color);
+}
+
 .hero.theme-light p {
-  color: var(--dark-color);
+  color: var(--text-color);
 }
 
 .hero.theme-light .button-container a.button {
   color: var(--dark-color);
   border-color: var(--dark-color);
+}
+
+/* mpg.de's "hot topic" hero (Asset-Background Text-Left/Right + Theme Light):
+   a translucent white card with a green top edge, closer to the real site's
+   headline card than a flat solid fill. */
+.hero.image-background-text-left.theme-light .hero-text,
+.hero.image-background-text-right.theme-light .hero-text {
+  background: rgb(255 255 255 / 90%);
+  border-top: 4px solid var(--main-accent-color);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 25%);
+}
+
+.hero.image-background-text-left.theme-light .button-container.cta-link a.button,
+.hero.image-background-text-right.theme-light .button-container.cta-link a.button,
+.hero.image-background-text-left.theme-light .button-container.cta-link a.button::after,
+.hero.image-background-text-right.theme-light .button-container.cta-link a.button::after {
+  color: var(--main-accent-color);
 }
 
 /* Overlay text box — targets .hero-text class set by JS, so it is always
