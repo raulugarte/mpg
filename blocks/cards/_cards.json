@@ -49,6 +49,21 @@
           "label": "Text",
           "valueType": "string"
         },
+
+        {
+          "component": "select",
+          "name": "cardStyle",
+          "label": "Hintergrundfarbe",
+          "valueType": "string",
+          "value": "default",
+          "options": [
+            { "name": "Standard (weiß)", "value": "default" },
+            { "name": "Hellgrau",        "value": "bg-grey" },
+            { "name": "MPG-Grün",        "value": "bg-green" },
+            { "name": "Dunkelgrün",      "value": "bg-dark" }
+          ]
+        },
+
         {
           "component": "select",
           "name": "ctastyle",
