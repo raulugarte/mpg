@@ -22,33 +22,33 @@
 */
 
 :root {
-  /* colors - MPG corporate design */
+  /* colors - MPG corporate design (matched against the live mpg.de stylesheet) */
   --background-color: var(--brand-background-color, #ffffff);
-  --dark-color: var(--brand-dark-color, #116656);
-  --light-color: var(--brand-light-color, #ddded6);
-  --text-color: var(--brand-text-color, #1a1a1a);
+  --dark-color: var(--brand-dark-color, #005555);
+  --light-color: var(--brand-light-color, #eeeeee);
+  --text-color: var(--brand-text-color, #333333);
   --text-light: var(--brand-light-text-color, #ffffff);
   --text-disabled:rgb(113, 113, 113);
-  --link-color: var(--brand-link-color, #116656);
-  --link-hover-color: var(--brand-link-hover-color, #0c4a3e);
-  --main-accent-color: var(--brand-theme-color, #116656);
+  --link-color: var(--brand-link-color, #006c66);
+  --link-hover-color: var(--brand-link-hover-color, #00534e);
+  --main-accent-color: var(--brand-theme-color, #006c66);
 
 
   --dark-color-opacity: rgba(0, 0, 0, 0.55);
   --light-color-opacity: rgba(255, 255, 255, 0.5);
-  --tab-background-color: #eeeeea;
+  --tab-background-color: #eeeeee;
   /* brand-scoped header/footer variables with sensible defaults */
-  --nav-background-color: var(--brand-nav-background-color, #ffffff);
-  --nav-text-color: var(--brand-nav-text-color, #1a1a1a);
-  --footer-background-color: var(--brand-footer-background-color, #116656);
+  --nav-background-color: var(--brand-nav-background-color, #eeeeee);
+  --nav-text-color: var(--brand-nav-text-color, #263238);
+  --footer-background-color: var(--brand-footer-background-color, #006c66);
   --footer-text-color: var(--brand-footer-text-color, #ffffff);
 
-  /* fonts - MPG Hausschrift Merriweather Sans (self-hosted, see fonts.css) */
-  --body-font-family: 'Merriweather Sans', merriweather-sans-fallback, Arial, sans-serif;
-  --heading-font-family: 'Merriweather Sans', merriweather-sans-fallback, Arial, sans-serif;
-  --light-font-family: 'Merriweather Sans', merriweather-sans-fallback, Arial, sans-serif;
-  --extra-font-family: 'Merriweather Sans ExtraBold', merriweather-sans-fallback, Arial, sans-serif;
-  --black-font-family: 'Merriweather Sans Black', merriweather-sans-fallback, Arial, sans-serif;
+  /* fonts - mpg.de mixes a sans body/nav face (Roboto) with serif headlines (Merriweather), self-hosted, see fonts.css */
+  --body-font-family: 'Roboto', roboto-fallback, Arial, sans-serif;
+  --heading-font-family: 'Merriweather', merriweather-fallback, Georgia, serif;
+  --light-font-family: 'Roboto', roboto-fallback, Arial, sans-serif;
+  --extra-font-family: 'Merriweather Black', merriweather-fallback, Georgia, serif;
+  --black-font-family: 'Merriweather Black', merriweather-fallback, Georgia, serif;
 
   /* body sizes */
   --body-font-size-m: 22px;
@@ -99,14 +99,20 @@
   --nav-height: 64px;
 }
 
-/* fallback font: metric-adjusted local Arial to reduce layout shift while Merriweather Sans loads */
+/* fallback fonts: metric-adjusted local system fonts to reduce layout shift while webfonts load */
 @font-face {
-  font-family: merriweather-sans-fallback;
-  size-adjust: 103.943%;
-  ascent-override: 94.667%;
-  descent-override: 26.264%;
-  line-gap-override: 0%;
+  font-family: roboto-fallback;
+  size-adjust: 99.529%;
   src: local('Arial');
+}
+
+@font-face {
+  font-family: merriweather-fallback;
+  size-adjust: 106.243%;
+  ascent-override: 92.618%;
+  descent-override: 25.696%;
+  line-gap-override: 0%;
+  src: local('Georgia');
 }
 
 @media (width >= 900px) {
@@ -953,7 +959,7 @@ table {
   border: 2px solid var(--main-accent-color) !important;
   border-radius: 0;
   font-family: var(--heading-font-family);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 18px;
   line-height: 1.2;
   text-align: center;
@@ -973,15 +979,15 @@ table {
 }
 
 .cta-button a.button:hover {
-  background-color: transparent !important;
-  color: var(--main-accent-color) !important;
-  border-color: var(--main-accent-color) !important;
+  background-color: var(--link-hover-color) !important;
+  color: var(--text-light) !important;
+  border-color: var(--link-hover-color) !important;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   transform: translateY(-1px);
 }
 
  .cta-button a.button:hover::after {
-  color: var(--main-accent-color) !important  ;
+  color: var(--text-light) !important;
   transform: translateX(2px);
 }
 
@@ -1002,7 +1008,7 @@ table {
   text-decoration: none;
   border-radius: 0;
   font-family: var(--heading-font-family);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 18px;
   line-height: 1.2;
   text-align: center;
@@ -1067,7 +1073,7 @@ table {
   border: 2px solid var(--dark-color) !important;
   border-radius: 0;
   font-family: var(--heading-font-family);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 18px;
   line-height: 1.2;
   text-align: center;

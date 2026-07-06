@@ -66,19 +66,27 @@ footer .footer a:hover {
   text-decoration: underline;
 }
 
-/* copyright strip: the last authored row breaks onto its own full-width
-   line, set apart by a light divider */
+/* copyright band: mpg.de's footer is actually two stacked bands (mid-green
+   quick-links area, darker teal copyright bar below it) rather than one flat
+   block - the last authored row breaks onto its own line and bleeds edge to
+   edge to reproduce that darker sub-band. */
 footer .footer > div > :last-child {
   flex-basis: 100%;
-  margin-top: 8px;
-  padding-top: 16px;
-  border-top: 1px solid rgba(255, 255, 255, .25);
+  background-color: var(--dark-color);
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  margin-bottom: -24px;
+  padding: 16px 24px;
   font-size: 13px;
-  opacity: .85;
 }
 
 @media (width >= 900px) {
   footer .footer > div {
     padding: 50px 32px 24px;
+  }
+
+  footer .footer > div > :last-child {
+    padding: 16px 32px;
   }
 }
