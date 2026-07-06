@@ -1,18 +1,25 @@
 footer {
-  background-color: var(--dark-color);
+  background-color: var(--footer-background-color);
   font-size: var(--body-font-size-xs);
   font-family: var(--light-font-family);
-  background-color: var(--dark-color-opacity);
-  background-color: #000;
   width: 100%;
   z-index: 2;
-  color: #ffffff;
+  color: var(--footer-text-color);
 }
 
+/* quick-links / social columns: each authored row lays out side by side */
 footer .footer > div {
   margin: auto;
   max-width: 1200px;
   padding: 40px 24px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px 48px;
+}
+
+footer .footer > div > * {
+  flex: 1 1 200px;
+  min-width: 160px;
 }
 
 footer .footer p {
@@ -25,17 +32,53 @@ footer .footer img {
   margin-bottom: 20px;
 }
 
+footer .footer h2,
+footer .footer h3,
+footer .footer h4 {
+  color: var(--footer-text-color);
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+
+footer .footer ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* a list made only of icon links (social media) flows horizontally instead of stacking */
+footer .footer ul:has(.icon) {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
 footer .footer a {
-  color: #ffffff;
+  color: var(--footer-text-color);
   text-decoration: none;
 }
 
 footer .footer a:hover {
-  color: var(--main-accent-color);
+  text-decoration: underline;
+}
+
+/* copyright strip: the last authored row breaks onto its own full-width
+   line, set apart by a light divider */
+footer .footer > div > :last-child {
+  flex-basis: 100%;
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, .25);
+  font-size: 13px;
+  opacity: .85;
 }
 
 @media (width >= 900px) {
   footer .footer > div {
-    padding: 50px 32px;
+    padding: 50px 32px 24px;
   }
 }

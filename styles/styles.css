@@ -22,33 +22,33 @@
 */
 
 :root {
-  /* colors */
+  /* colors - MPG corporate design */
   --background-color: var(--brand-background-color, #ffffff);
-  --dark-color: var(--brand-dark-color, #131313);
-  --light-color: var(--brand-light-color, #dcdcdc);
-  --text-color: var(--brand-text-color, #131313);
+  --dark-color: var(--brand-dark-color, #116656);
+  --light-color: var(--brand-light-color, #ddded6);
+  --text-color: var(--brand-text-color, #1a1a1a);
   --text-light: var(--brand-light-text-color, #ffffff);
   --text-disabled:rgb(113, 113, 113);
-  --link-color: var(--brand-link-color, #131313);
-  --link-hover-color: var(--brand-link-hover-color, #F97316);
-  --main-accent-color: var(--brand-theme-color, #FB923C);
+  --link-color: var(--brand-link-color, #116656);
+  --link-hover-color: var(--brand-link-hover-color, #0c4a3e);
+  --main-accent-color: var(--brand-theme-color, #116656);
 
 
   --dark-color-opacity: rgba(0, 0, 0, 0.55);
   --light-color-opacity: rgba(255, 255, 255, 0.5);
-  --tab-background-color: rgba(0, 0, 0, 0.02);
+  --tab-background-color: #eeeeea;
   /* brand-scoped header/footer variables with sensible defaults */
-  --nav-background-color: var(--brand-nav-background-color, #0000008c);
-  --nav-text-color: var(--brand-nav-text-color, #ffffff);
-  --footer-background-color: var(--brand-footer-background-color, #000);
+  --nav-background-color: var(--brand-nav-background-color, #ffffff);
+  --nav-text-color: var(--brand-nav-text-color, #1a1a1a);
+  --footer-background-color: var(--brand-footer-background-color, #116656);
   --footer-text-color: var(--brand-footer-text-color, #ffffff);
-  
-  /* fonts */
-  --body-font-family: 'Adobe Clean', roboto, roboto-fallback, sans-serif;
-  --heading-font-family: 'Adobe Clean Bold', roboto-condensed, roboto-condensed-fallback, sans-serif;
-  --light-font-family: 'Adobe Clean Light', roboto, roboto-fallback, sans-serif;
-  --extra-font-family: 'Adobe Clean Extra Bold', roboto, roboto-fallback, sans-serif;
-  --black-font-family: 'Adobe Clean Black', roboto, roboto-fallback, sans-serif;
+
+  /* fonts - MPG Hausschrift Merriweather Sans (self-hosted, see fonts.css) */
+  --body-font-family: 'Merriweather Sans', merriweather-sans-fallback, Arial, sans-serif;
+  --heading-font-family: 'Merriweather Sans', merriweather-sans-fallback, Arial, sans-serif;
+  --light-font-family: 'Merriweather Sans', merriweather-sans-fallback, Arial, sans-serif;
+  --extra-font-family: 'Merriweather Sans ExtraBold', merriweather-sans-fallback, Arial, sans-serif;
+  --black-font-family: 'Merriweather Sans Black', merriweather-sans-fallback, Arial, sans-serif;
 
   /* body sizes */
   --body-font-size-m: 22px;
@@ -99,16 +99,13 @@
   --nav-height: 64px;
 }
 
-/* fallback fonts */
+/* fallback font: metric-adjusted local Arial to reduce layout shift while Merriweather Sans loads */
 @font-face {
-  font-family: roboto-condensed-fallback;
-  size-adjust: 88.82%;
-  src: local('Arial');
-}
-
-@font-face {
-  font-family: roboto-fallback;
-  size-adjust: 99.529%;
+  font-family: merriweather-sans-fallback;
+  size-adjust: 103.943%;
+  ascent-override: 94.667%;
+  descent-override: 26.264%;
+  line-gap-override: 0%;
   src: local('Arial');
 }
 
@@ -419,9 +416,15 @@ h6 {
   margin-top: 0.8em;
   margin-bottom: 0.25em;
   font-family: var(--heading-font-family);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.25;
   scroll-margin: 40px;
+}
+
+main h2 {
+  display: inline-block;
+  padding-bottom: 0.3em;
+  border-bottom: 3px solid var(--main-accent-color);
 }
 
 h1 {
@@ -789,9 +792,9 @@ main > .section[data-sec-full-width="true"] > div {
 
 
 /* Section Background Colors */
-main .section.bg-theme {  
+main .section.bg-theme {
   background-color: var(--main-accent-color);
-  color: var(--text-color);
+  color: var(--text-light);
 }
 main .section.bg-dark {
   background-color: var(--dark-color);
@@ -948,7 +951,7 @@ table {
   color: var(--text-light) !important;
   text-decoration: none;
   border: 2px solid var(--main-accent-color) !important;
-  border-radius: 4px;
+  border-radius: 0;
   font-family: var(--heading-font-family);
   font-weight: 600;
   font-size: 18px;
@@ -997,7 +1000,7 @@ table {
   padding: 12px 24px !important;
   margin: 10px 5px;
   text-decoration: none;
-  border-radius: 4px;
+  border-radius: 0;
   font-family: var(--heading-font-family);
   font-weight: 600;
   font-size: 18px;
@@ -1062,7 +1065,7 @@ table {
   color: var(--dark-color) !important;
   text-decoration: none;
   border: 2px solid var(--dark-color) !important;
-  border-radius: 4px;
+  border-radius: 0;
   font-family: var(--heading-font-family);
   font-weight: 600;
   font-size: 18px;

@@ -4,6 +4,7 @@ header .nav-wrapper {
   width: 100%;
   z-index: 2;
   position: fixed;
+  border-top: 4px solid var(--main-accent-color);
 }
 
 header nav {
@@ -90,7 +91,7 @@ header nav .nav-hamburger button {
   border-radius: 0;
   padding: 0;
   background-color: transparent;
-  color: var(--text-light);
+  color: var(--nav-text-color);
   overflow: initial;
   text-overflow: initial;
   white-space: initial;
@@ -231,7 +232,8 @@ header nav .nav-sections ul > li > a::before {
   clip-path: polygon(0% 0%, 0% 100%, 0 100%, 0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 100% 100%, 100% 0%);
 }
 
-header nav .nav-sections ul > li > a:hover::before {
+header nav .nav-sections ul > li > a:hover::before,
+header nav .nav-sections ul > li > a[aria-current="page"]::before {
   transform: translate3d(0, 2px, 0) scale3d(1.08, 3, 1);
   clip-path: polygon(0% 0%, 0% 100%, 50% 100%, 50% 0, 50% 0, 50% 100%, 50% 100%, 0 100%, 100% 100%, 100% 0%);
 }
@@ -299,7 +301,7 @@ header nav .nav-sections ul > li > ul > li {
   header nav .nav-sections .default-content-wrapper > ul > li {
     flex: 0 1 auto;
     position: relative;
-    color: #ffffff;
+    color: var(--nav-text-color);
   }
 
   header nav .nav-sections .default-content-wrapper > ul > li > ul {
@@ -315,6 +317,7 @@ header nav .nav-sections ul > li > ul > li {
     top: 150%;
     padding: 16px;
     background-color: var(--light-color);
+    border-top: 3px solid var(--main-accent-color);
     white-space: initial;
   }
 
@@ -479,7 +482,13 @@ header nav .nav-tools .lang-switcher { display: inline-flex; }
     gap: 35px;
     align-items: flex-start;
   }
-  
+
+  /* the mobile flyout sits on a dark overlay, so its links need light text
+     even though the closed header bar itself is white with dark text */
+  header nav[aria-expanded='true'] .nav-sections a {
+    color: var(--text-light);
+  }
+
   body.wehealthcare-theme header nav .nav-sections ul > li > a{
     color:#000;
   }
