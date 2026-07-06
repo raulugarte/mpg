@@ -310,19 +310,19 @@
         "value": "default",
         "options": [
           {
-            "name": "Standard (weiß)",
+            "name": "Default (White)",
             "value": "default"
           },
           {
-            "name": "Hellgrau",
+            "name": "Light Gray",
             "value": "bg-grey"
           },
           {
-            "name": "MPG-Grün",
+            "name": "MPG-Green",
             "value": "bg-green"
           },
           {
-            "name": "Dunkelgrün",
+            "name": "Dark Green",
             "value": "bg-dark"
           }
         ]
