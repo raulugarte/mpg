@@ -305,7 +305,7 @@
       {
         "component": "select",
         "name": "cardStyle",
-        "label": "Hintergrundfarbe",
+        "label": "Background Color",
         "valueType": "string",
         "value": "default",
         "options": [
