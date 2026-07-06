@@ -307,18 +307,18 @@
         "name": "cardStyle",
         "label": "Background Color",
         "valueType": "string",
-        "value": "default",
+        "value": "",
         "options": [
           {
-            "name": "Default (White)",
-            "value": "default"
+            "name": "Default (white)",
+            "value": ""
           },
           {
-            "name": "Light Gray",
+            "name": "Light Grey",
             "value": "bg-grey"
           },
           {
-            "name": "MPG-Green",
+            "name": "MPG Green",
             "value": "bg-green"
           },
           {
@@ -332,19 +332,52 @@
         "name": "ctastyle",
         "label": "CTA Style",
         "valueType": "string",
-        "value": "button",
+        "value": "cta-button",
         "options": [
           {
+            "name": "Link",
+            "value": "cta-link"
+          },
+          {
             "name": "Primary Button",
-            "value": "button"
+            "value": "cta-button"
           },
           {
             "name": "Secondary Button",
-            "value": "button-secondary"
+            "value": "cta-button-secondary"
           },
           {
             "name": "Dark Button",
-            "value": "button-dark"
+            "value": "cta-button-dark"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "style",
+        "label": "Style",
+        "valueType": "string",
+        "value": "",
+        "options": [
+          {
+            "name": "Default",
+            "value": ""
+          },
+          {
+            "name": "Image Top",
+            "value": "image-top"
+          },
+          {
+            "name": "Image Bottom",
+            "value": "image-bottom"
+          },
+          {
+            "name": "Teaser Overlay",
+            "value": "teaser-overlay"
+          },
+          {
+            "name": "Teaser Card",
+            "value": "teaser-card"
           }
         ]
       }

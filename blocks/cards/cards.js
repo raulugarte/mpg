@@ -5,73 +5,51 @@ export default function decorate(block) {
   const ul = document.createElement('ul');
   [...block.children].forEach((row) => {
     const li = document.createElement('li');
-    
-    // Read card style from the third div (index 2)
-    const styleDiv = row.children[2];
-    const styleParagraph = styleDiv?.querySelector('p');
-    const cardStyle = styleParagraph?.textContent?.trim() || 'default';
-    if (cardStyle && cardStyle !== 'default') {
-      //li.className = cardStyle;
-      li.classList.add(cardStyle);
-    }
-    
-    // Read CTA style from the fourth div (index 3)
-    const ctaDiv = row.children[3];
-    const ctaParagraph = ctaDiv?.querySelector('p');
-    const ctaStyle = ctaParagraph?.textContent?.trim() || 'default';
-    
+
+    // Config cells by position:
+    // index 2 = Background Color, index 3 = CTA Style, index 4 = Style
+    const bgValue = row.children[2]?.querySelector('p')?.textContent?.trim() || '';
+    const ctaStyle = row.children[3]?.querySelector('p')?.textContent?.trim() || 'default';
+    const styleValue = row.children[4]?.querySelector('p')?.textContent?.trim() || '';
+
+    // Background color and layout style both become classes on the <li>
+    if (bgValue && bgValue !== 'default') li.classList.add(bgValue);
+    if (styleValue && styleValue !== 'default') li.classList.add(styleValue);
+
     moveInstrumentation(row, li);
     while (row.firstElementChild) li.append(row.firstElementChild);
-    
-    // Process the li children to identify and style them correctly
+
+    // Assign classes; hide the three config cells (index 2, 3, 4)
     [...li.children].forEach((div, index) => {
-      // First div (index 0) - Image
       if (index === 0) {
         div.className = 'cards-card-image';
-      }
-      // Second div (index 1) - Content with button
-      else if (index === 1) {
+      } else if (index === 1) {
         div.className = 'cards-card-body';
-      }
-      // Third div (index 2) - Card style configuration
-      else if (index === 2) {
+      } else if (index === 2 || index === 3 || index === 4) {
         div.className = 'cards-config';
         const p = div.querySelector('p');
-        if (p) {
-          p.style.display = 'none'; // Hide the configuration text
-        }
-      }
-      // Fourth div (index 3) - CTA style configuration
-      else if (index === 3) {
-        div.className = 'cards-config';
-        const p = div.querySelector('p');
-        if (p) {
-          p.style.display = 'none'; // Hide the configuration text
-        }
-      }
-      // Any other divs
-      else {
+        if (p) p.style.display = 'none';
+      } else {
         div.className = 'cards-card-body';
       }
     });
-    
-    // Apply CTA styles to button containers
+
+    // Apply CTA style to button containers
     const buttonContainers = li.querySelectorAll('p.button-container');
-    buttonContainers.forEach(buttonContainer => {
-      // Remove any existing CTA classes
-      buttonContainer.classList.remove('default', 'cta-button', 'cta-button-secondary', 'cta-button-dark', 'cta-default');
-      // Add the correct CTA class
+    buttonContainers.forEach((buttonContainer) => {
+      buttonContainer.classList.remove('default', 'cta-link', 'cta-button', 'cta-button-secondary', 'cta-button-dark', 'cta-default');
       buttonContainer.classList.add(ctaStyle);
     });
-    
+
     ul.append(li);
   });
+
   ul.querySelectorAll('picture > img').forEach((img) => {
     const optimizedPic = createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }]);
     moveInstrumentation(img, optimizedPic.querySelector('img'));
     img.closest('picture').replaceWith(optimizedPic);
   });
- 
+
   block.textContent = '';
   block.append(ul);
 }

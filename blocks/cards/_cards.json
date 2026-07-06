@@ -49,40 +49,44 @@
           "label": "Text",
           "valueType": "string"
         },
-
         {
           "component": "select",
           "name": "cardStyle",
-          "label": "Hintergrundfarbe",
+          "label": "Background Color",
           "valueType": "string",
-          "value": "default",
+          "value": "",
           "options": [
-            { "name": "Standard (weiß)", "value": "default" },
-            { "name": "Hellgrau",        "value": "bg-grey" },
-            { "name": "MPG-Grün",        "value": "bg-green" },
-            { "name": "Dunkelgrün",      "value": "bg-dark" }
+            { "name": "Default (white)", "value": "" },
+            { "name": "Light Grey",      "value": "bg-grey" },
+            { "name": "MPG Green",       "value": "bg-green" },
+            { "name": "Dark Green",      "value": "bg-dark" }
           ]
         },
-
         {
           "component": "select",
           "name": "ctastyle",
           "label": "CTA Style",
           "valueType": "string",
-          "value": "button",
+          "value": "cta-button",
           "options": [
-            {
-              "name": "Primary Button",
-              "value": "button"
-            },
-            {
-              "name": "Secondary Button",
-              "value": "button-secondary"
-            },
-            {
-              "name": "Dark Button",
-              "value": "button-dark"
-            }
+            { "name": "Link",             "value": "cta-link" },
+            { "name": "Primary Button",   "value": "cta-button" },
+            { "name": "Secondary Button", "value": "cta-button-secondary" },
+            { "name": "Dark Button",      "value": "cta-button-dark" }
+          ]
+        },
+        {
+          "component": "select",
+          "name": "style",
+          "label": "Style",
+          "valueType": "string",
+          "value": "",
+          "options": [
+            { "name": "Default",        "value": "" },
+            { "name": "Image Top",      "value": "image-top" },
+            { "name": "Image Bottom",   "value": "image-bottom" },
+            { "name": "Teaser Overlay", "value": "teaser-overlay" },
+            { "name": "Teaser Card",    "value": "teaser-card" }
           ]
         }
       ]
