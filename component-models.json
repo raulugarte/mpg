@@ -6174,12 +6174,9 @@
         "value": "Pages"
       },
       {
-        "component": "text",
-        "valueType": "string",
+        "component": "aem-content",
         "name": "pathPrefix",
-        "label": "Path Prefix",
-        "description": "Nur Seiten unter diesem Pfad, z. B. /en/news. '/' = ganze Site.",
-        "value": "/"
+        "label": "Path"
       },
       {
         "component": "select",
@@ -6203,7 +6200,7 @@
         "valueType": "string",
         "name": "filterTags",
         "label": "Filter by Tags",
-        "description": "Kommagetrennt, z. B. research, climate. Leer = kein Tag-Filter.",
+        "description": "Kommagetrennt, z. B. reference-demo:research. Leer = kein Tag-Filter.",
         "value": ""
       },
       {
