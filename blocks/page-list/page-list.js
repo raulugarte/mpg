@@ -23,12 +23,20 @@ function depthOf(path) {
   return path.split('/').filter(Boolean).length;
 }
 
-// relative Bild-URL (auch EDS-Media wie ./media_xxx) absolut machen
-function absUrl(u) {
-  if (!u) return '';
-  if (/^https?:\/\//.test(u)) return u;
-  const clean = u.replace(/^\.?\//, '');
-  return `${isEdsOrigin() ? '' : EDS_ORIGIN}/${clean}`;
+// Bild-URL absolut machen. og:image ist wurzel-relativ (/en/.../media...),
+// mainImage ist seiten-relativ (./media...) -> gegen das Seiten-Verzeichnis auflösen.
+function resolveImg(src, pagePath) {
+  if (!src) return '';
+  if (/^https?:\/\//.test(src)) return src;
+  let path;
+  if (src.startsWith('/')) {
+    path = src;
+  } else {
+    const clean = src.replace(/^\.\//, '');
+    const dir = (pagePath || '').replace(/\/[^/]*$/, '');
+    path = `${dir}/${clean}`;
+  }
+  return `${isEdsOrigin() ? '' : EDS_ORIGIN}${path}`;
 }
 
 // AEM-Content-Pfad -> öffentlicher Pfad
@@ -225,7 +233,7 @@ export default async function decorate(block) {
 
       if (showImage && e.image) {
         const img = document.createElement('img');
-        img.src = absUrl(e.image);
+        img.src = resolveImg(e.image, e.path);
         img.alt = e.title || '';
         img.loading = 'lazy';
         li.append(img);
