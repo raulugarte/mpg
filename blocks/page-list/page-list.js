@@ -160,12 +160,18 @@ async function enrichFromAuthorHtml(entries) {
       const main = doc.querySelector('main') || doc.body;
       if (!main) return e;
       const img = main.querySelector('img');
+      let image = (img && img.getAttribute('src')) || '';
+      if (!image) {
+        // kein Content-Bild -> og:image aus dem <head> derselben Seite
+        const og = doc.querySelector('head meta[property="og:image"]');
+        image = (og && og.getAttribute('content')) || '';
+      }
       const para = [...main.querySelectorAll('p')]
         .map((el) => el.textContent.trim())
         .find(Boolean);
       return {
         ...e,
-        image: (img && img.getAttribute('src')) || e.image,
+        image: image || e.image,
         description: para || e.description,
       };
     } catch (err) {
