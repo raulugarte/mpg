@@ -186,8 +186,14 @@ header .nav-brand:not(:has(img)):not(:has(picture))::before {
 }
 
 header nav .nav-brand img {
+  /* RUG
   width: 100px;
-  height: auto;
+  height: auto; */
+
+  width: auto;
+  height: 48px;   /* Logo-Höhe; passt in die 90px-Nav mit Luft. Bei Bedarf 40–56px */
+  max-width: 320px;
+
 }
 
 .wehealthcare-theme header nav .nav-brand img {

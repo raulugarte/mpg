@@ -1116,7 +1116,22 @@ table {
 
 /* Accessibility: darken default accent and hover for better contrast
 :root {
-  --main-accent-color: #C2410C; /* darker orange for contrast */
-  --link-hover-color: #9A3412;  /* darker hover */
+  --main-accent-color: #C2410C; // darker orange for contrast 
+  --link-hover-color: #9A3412;  // darker hover 
 }
  */
+
+
+/* Fixed Header (90px) verdeckt den Hero-Text -> Inhalt der ersten Section
+   darunter schieben. Das Hero-Hintergrundbild ist absolut positioniert und
+   bleibt dadurch vollflächig; nur der Textinhalt rückt unter die Nav. */
+main > .section:first-of-type {
+  padding-top: 90px;
+}
+
+/* Im Universal Editor liegt der Header im normalen Fluss (position: initial),
+   dort ist kein Offset nötig. */
+.adobe-ue-edit main > .section:first-of-type,
+.adobe-ue-preview main > .section:first-of-type {
+  padding-top: 0;
+}
