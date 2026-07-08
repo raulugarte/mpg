@@ -24,6 +24,9 @@ indices:
       body:
         select: main
         value: textContent(el)
+      excerpt:
+        select: main p
+        value: textContent(el)
       tags:
         select: head > meta[name="cq-tags"]
         value: attribute(el, "content")
@@ -67,7 +70,7 @@ indices:
       - /es/search
       - /es/nav
       - /es/footer
-      
+
   site-de:
     <<: *base-site
     include:
