@@ -1122,17 +1122,11 @@ table {
  */
 
 
-/* Ziel A: Nav als solider Balken, Inhalt startet darunter. */
-header .nav-wrapper {
-  background-color: var(--nav-background-color) !important; /* undurchsichtig statt transparent */
+/* Ziel A: Header als normaler Balken im Fluss statt fixed -> kein Overlap. */
+body header {
+  position: static !important;
 }
-
-main {
-  padding-top: 90px;
-}
-
-/* Im UE ist die Nav 49px hoch und liegt anders -> passender Offset. */
-.adobe-ue-edit main,
-.adobe-ue-preview main {
-  padding-top: 49px;
+body header .nav-wrapper {
+  position: static !important;
+  background-color: var(--nav-background-color) !important;
 }
