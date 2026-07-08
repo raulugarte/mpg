@@ -23,12 +23,12 @@ function depthOf(path) {
   return path.split('/').filter(Boolean).length;
 }
 
-// relative Bild-/Pfad-URL absolut machen (für den Author-Canvas)
+// relative Bild-URL (auch EDS-Media wie ./media_xxx) absolut machen
 function absUrl(u) {
   if (!u) return '';
   if (/^https?:\/\//.test(u)) return u;
-  const path = u.startsWith('/') ? u : `/${u}`;
-  return isEdsOrigin() ? path : `${EDS_ORIGIN}${path}`;
+  const clean = u.replace(/^\.?\//, '');
+  return `${isEdsOrigin() ? '' : EDS_ORIGIN}/${clean}`;
 }
 
 // AEM-Content-Pfad -> öffentlicher Pfad
@@ -147,7 +147,7 @@ async function enrichFromContent(entries, publicPrefix) {
     if (!p) return e;
     return {
       ...e,
-      image: e.image || p.image || '',
+      image: p.mainImage || p.image || e.image || '',
       description: p.excerpt || p.description || e.description,
     };
   });

@@ -33,6 +33,9 @@ indices:
       image:
         select: head > meta[property="og:image"]
         value: match(attribute(el, "content"), "^(https?:\/\/.*?(aem.live))+(.*)|^(.*)")
+      mainImage:
+        select: main img
+        value: attribute(el, "src")
       publishDate:
         select: head > meta[name="published-time"]
         value: parseTimestamp(attribute(el, "content"), "ddd, DD MMM YYYY hh:mm:ss GMT")
