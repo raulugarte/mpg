@@ -1122,3 +1122,17 @@ table {
  */
 
 
+/* Ziel A: Nav als solider Balken, Inhalt startet darunter. */
+header .nav-wrapper {
+  background-color: var(--nav-background-color) !important; /* undurchsichtig statt transparent */
+}
+
+main {
+  padding-top: 90px;
+}
+
+/* Im UE ist die Nav 49px hoch und liegt anders -> passender Offset. */
+.adobe-ue-edit main,
+.adobe-ue-preview main {
+  padding-top: 49px;
+}
