@@ -81,6 +81,20 @@
           "label": "Max Items",
           "description": "0 = no limit",
           "value": "0"
+        },
+        {
+          "component": "boolean",
+          "valueType": "boolean",
+          "name": "showImage",
+          "label": "Show Image",
+          "value": false
+        },
+        {
+          "component": "boolean",
+          "valueType": "boolean",
+          "name": "showDescription",
+          "label": "Show Description",
+          "value": false
         }
       ]
     }

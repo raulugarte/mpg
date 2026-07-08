@@ -5,8 +5,22 @@
 }
 
 .page-list li {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
   padding: 16px 0;
   border-bottom: 1px solid var(--mpg-grey, #ddded6);
+}
+
+.page-list li img {
+  width: 140px;
+  height: 90px;
+  object-fit: cover;
+  flex: 0 0 auto;
+}
+
+.page-list .pl-text {
+  flex: 1 1 auto;
 }
 
 .page-list li a {
