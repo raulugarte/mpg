@@ -403,6 +403,15 @@ header {
   z-index: 111;
 }
 
+/* The header (and its .nav-wrapper) are position:fixed, so they float above the
+   page and reserve no space in the layout. Without an offset the first section
+   (e.g. the hero) starts at the very top and its top edge is hidden behind the
+   opaque grey nav bar. Push the page content down by the bar's height
+   (min-height 90px + 4px green accent border = 94px) so nothing is clipped. */
+main {
+  padding-top: 94px;
+}
+
 header .header,
 footer .footer {
   visibility: hidden;
@@ -637,6 +646,10 @@ main .cards-container {
   perspective: initial;
   overflow: initial;
   min-height: 100px;
+  /* In the Universal Editor the header is position:initial (in-flow, see rule
+     above), so it already takes up space. Drop the fixed-header offset here to
+     avoid a double gap above the first section while authoring. */
+  padding-top: 0;
 }
 .adobe-ue-edit main .hero-container, .adobe-ue-preview main .hero-container {
   margin: initial !important;
