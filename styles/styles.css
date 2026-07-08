@@ -1122,9 +1122,11 @@ table {
  */
 
 
-/* Ziel A: Header als normaler Balken im Fluss statt fixed -> kein Overlap. */
+/* Header oben festkleben, ohne Overlap (belegt Platz im Fluss). */
 body header {
-  position: static !important;
+  position: sticky !important;
+  top: 0;
+  z-index: 111;
 }
 body header .nav-wrapper {
   position: static !important;
