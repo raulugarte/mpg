@@ -211,8 +211,10 @@ export default async function decorate(block) {
       });
     }
 
-    // Content-Daten (Bild/Beschreibung) nur laden, wenn gebraucht
-    if (showImage || showDescription) {
+    // Content-Daten (Bild/Beschreibung) aus dem Index nur auf EDS laden.
+    // Im Author gibt es keine gleiche-Domain query-index; Cross-Origin
+    // scheitert an CORS -> dort bleibt es bei Titel + Page-Description.
+    if ((showImage || showDescription) && !isAuthor()) {
       entries = await enrichFromContent(entries, publicPrefix);
     }
 
