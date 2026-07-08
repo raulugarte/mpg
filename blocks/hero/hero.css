@@ -712,3 +712,24 @@ picture {
   color: var(--text-color);
   background: rgba(0, 0, 0, 0.08);
 }
+
+/* Hero-Hintergrundbild aus dem negativen z-index holen, damit es nicht
+   hinter/unter die fixe Nav rutscht. */
+.hero picture {
+  z-index: 0;
+}
+.hero > div {
+  position: relative;
+  z-index: 1;
+}
+
+/* Erste Hero-Section startet unter der fixen Nav (90px). */
+main > .section.hero-container:first-of-type {
+  margin-top: 90px;
+}
+
+/* Im Universal Editor liegt die Nav im Fluss -> kein Offset. */
+.adobe-ue-edit main > .section.hero-container:first-of-type,
+.adobe-ue-preview main > .section.hero-container:first-of-type {
+  margin-top: 0;
+}

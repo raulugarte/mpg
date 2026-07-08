@@ -1122,14 +1122,3 @@ table {
  */
 
 
-/* Fixed Header (90px) aus dem Fluss -> gesamten Inhalt darunter schieben,
-   damit der Hero inkl. Hintergrundbild unter der Nav beginnt. */
-main {
-  padding-top: 90px;
-}
-
-/* Im Universal Editor liegt der Header im Fluss -> kein Offset nötig. */
-.adobe-ue-edit main,
-.adobe-ue-preview main {
-  padding-top: 0;
-}
