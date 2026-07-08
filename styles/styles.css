@@ -1122,16 +1122,14 @@ table {
  */
 
 
-/* Fixed Header (90px) verdeckt den Hero-Text -> Inhalt der ersten Section
-   darunter schieben. Das Hero-Hintergrundbild ist absolut positioniert und
-   bleibt dadurch vollflächig; nur der Textinhalt rückt unter die Nav. */
-main > .section:first-of-type {
+/* Fixed Header (90px) aus dem Fluss -> gesamten Inhalt darunter schieben,
+   damit der Hero inkl. Hintergrundbild unter der Nav beginnt. */
+main {
   padding-top: 90px;
 }
 
-/* Im Universal Editor liegt der Header im normalen Fluss (position: initial),
-   dort ist kein Offset nötig. */
-.adobe-ue-edit main > .section:first-of-type,
-.adobe-ue-preview main > .section:first-of-type {
+/* Im Universal Editor liegt der Header im Fluss -> kein Offset nötig. */
+.adobe-ue-edit main,
+.adobe-ue-preview main {
   padding-top: 0;
 }
