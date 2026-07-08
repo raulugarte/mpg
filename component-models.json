@@ -6196,12 +6196,11 @@
         ]
       },
       {
-        "component": "text",
-        "valueType": "string",
+        "component": "aem-tag",
         "name": "filterTags",
         "label": "Filter by Tags",
-        "description": "Kommagetrennt, z. B. reference-demo:research. Leer = kein Tag-Filter.",
-        "value": ""
+        "valueType": "string",
+        "rootPath": "/content/cq:tags/reference-demo"
       },
       {
         "component": "select",
