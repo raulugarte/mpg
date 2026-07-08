@@ -720,8 +720,3 @@ main > .section.hero-container:first-of-type {
   margin-top: 90px;
 }
 
-/* Im Universal Editor liegt die Nav im Fluss -> kein Offset. */
-.adobe-ue-edit main > .section.hero-container:first-of-type,
-.adobe-ue-preview main > .section.hero-container:first-of-type {
-  margin-top: 0;
-}
