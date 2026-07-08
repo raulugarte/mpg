@@ -2,6 +2,9 @@
 const EDS_ORIGIN = 'https://main--mpg--raulugarte.aem.page';
 const AEM_SITE_ROOT = '/content/mpg/language-masters';
 
+// Max. Anzahl Seiten, die im Author per HTML-Fetch angereichert werden (WYSIWYG-Schutz)
+const MAX_ENRICH = 24;
+
 // Merkt sich einmal geholte query-index-Antworten (kein Doppel-Fetch)
 const indexCache = {};
 
@@ -36,7 +39,7 @@ function resolveImg(src, pagePath) {
     const dir = (pagePath || '').replace(/\/[^/]*$/, '');
     path = `${dir}/${clean}`;
   }
-  return `${isEdsOrigin() ? '' : EDS_ORIGIN}${path}`;
+  return `${isEdsOrigin() ? '' : window.location.origin}${path}`;
 }
 
 // AEM-Content-Pfad -> öffentlicher Pfad
@@ -146,6 +149,31 @@ async function fromAuthor(rawPath, publicPrefix, scope) {
   return out;
 }
 
+// Bild + erster Absatz aus der im Author gerenderten Seite (same-origin, kein CORS)
+async function enrichFromAuthorHtml(entries) {
+  return Promise.all(entries.map(async (e) => {
+    try {
+      const resp = await fetch(`${AEM_SITE_ROOT}${e.path}.html`, { credentials: 'include' });
+      if (!resp.ok) return e;
+      const html = await resp.text();
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const main = doc.querySelector('main') || doc.body;
+      if (!main) return e;
+      const img = main.querySelector('img');
+      const para = [...main.querySelectorAll('p')]
+        .map((el) => el.textContent.trim())
+        .find(Boolean);
+      return {
+        ...e,
+        image: (img && img.getAttribute('src')) || e.image,
+        description: para || e.description,
+      };
+    } catch (err) {
+      return e;
+    }
+  }));
+}
+
 // Bild + Beschreibung aus dem Content (via query-index) ergänzen
 async function enrichFromContent(entries, publicPrefix) {
   const json = await fetchIndexJson(indexUrlFor(publicPrefix));
@@ -211,13 +239,6 @@ export default async function decorate(block) {
       });
     }
 
-    // Content-Daten (Bild/Beschreibung) aus dem Index nur auf EDS laden.
-    // Im Author gibt es keine gleiche-Domain query-index; Cross-Origin
-    // scheitert an CORS -> dort bleibt es bei Titel + Page-Description.
-    if ((showImage || showDescription) && !isAuthor()) {
-      entries = await enrichFromContent(entries, publicPrefix);
-    }
-
     entries.sort((a, b) => {
       switch (sortBy) {
         case 'oldest': return a.date - b.date;
@@ -229,6 +250,18 @@ export default async function decorate(block) {
     });
 
     if (limit > 0) entries = entries.slice(0, limit);
+
+    // Bild/Beschreibung erst für die tatsächlich angezeigten Einträge laden:
+    // im Author aus der gerenderten Seite (same-origin), auf EDS aus dem query-index.
+    if (showImage || showDescription) {
+      if (isAuthor()) {
+        const head = entries.slice(0, MAX_ENRICH);
+        const enriched = await enrichFromAuthorHtml(head);
+        entries = enriched.concat(entries.slice(MAX_ENRICH));
+      } else {
+        entries = await enrichFromContent(entries, publicPrefix);
+      }
+    }
 
     entries.forEach((e) => {
       const li = document.createElement('li');
