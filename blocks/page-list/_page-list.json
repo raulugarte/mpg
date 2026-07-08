@@ -39,8 +39,8 @@
           "label": "Scope",
           "value": "descendants",
           "options": [
-            { "name": "Alle Seiten unter dem Pfad", "value": "descendants" },
-            { "name": "Nur direkte Kind-Seiten",     "value": "children" }
+            { "name": "All pages under the path", "value": "descendants" },
+            { "name": "Direct child pages only",  "value": "children" }
           ]
         },
         {
@@ -48,7 +48,7 @@
           "name": "filterTags",
           "label": "Filter by Tags",
           "valueType": "string",
-          "rootPath": "/content/cq:tags/reference-demo"
+          "rootPath": "/content/cq:tags/mpg"
         },
         {
           "component": "select",
@@ -57,8 +57,8 @@
           "label": "Tag Match",
           "value": "any",
           "options": [
-            { "name": "Mindestens ein Tag (any)", "value": "any" },
-            { "name": "Alle Tags (all)",          "value": "all" }
+            { "name": "At least one tag (any)", "value": "any" },
+            { "name": "All tags (all)",         "value": "all" }
           ]
         },
         {
@@ -68,10 +68,10 @@
           "label": "Sort By",
           "value": "newest",
           "options": [
-            { "name": "Neueste zuerst",  "value": "newest" },
-            { "name": "Älteste zuerst",  "value": "oldest" },
-            { "name": "Titel A→Z",       "value": "title-asc" },
-            { "name": "Titel Z→A",       "value": "title-desc" }
+            { "name": "Newest first", "value": "newest" },
+            { "name": "Oldest first", "value": "oldest" },
+            { "name": "Title A\u2192Z", "value": "title-asc" },
+            { "name": "Title Z\u2192A", "value": "title-desc" }
           ]
         },
         {
@@ -79,7 +79,7 @@
           "valueType": "number",
           "name": "limit",
           "label": "Max Items",
-          "description": "0 = keine Begrenzung",
+          "description": "0 = no limit",
           "value": "0"
         }
       ]

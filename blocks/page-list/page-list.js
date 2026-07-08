@@ -1,11 +1,11 @@
-// EDS-Domain, auf der die query-index.json liegt (bei Bedarf anpassen).
+// Projekt-Konstanten (bei Bedarf anpassen)
 const EDS_ORIGIN = 'https://main--mpg--raulugarte.aem.page';
+const AEM_SITE_ROOT = '/content/mpg/language-masters';
 
 function isEdsOrigin() {
   return /\.aem\.(page|live)$/.test(window.location.hostname);
 }
 
-// Author/UE: nicht EDS und auf einer AEM-/Content-URL
 function isAuthor() {
   return !isEdsOrigin()
     && (window.location.hostname.includes('adobeaemcloud.com')
@@ -20,6 +20,15 @@ function depthOf(path) {
   return path.split('/').filter(Boolean).length;
 }
 
+// AEM-Content-Pfad -> öffentlicher Pfad (/content/mpg/language-masters/en/x -> /en/x)
+function toPublic(p) {
+  if (!p) return '/';
+  let out = p.startsWith(AEM_SITE_ROOT) ? p.slice(AEM_SITE_ROOT.length) : p;
+  out = out.replace(/\.html$/, '');
+  if (out.length > 1 && out.endsWith('/')) out = out.slice(0, -1);
+  return out || '/';
+}
+
 function normalizeTags(tags) {
   if (!tags) return [];
   const arr = Array.isArray(tags) ? tags : String(tags).split(',');
@@ -30,26 +39,25 @@ function edsDateOf(p) {
   return Number(p.publishDate) || Number(p.lastModified) || 0;
 }
 
-function pathScopeOk(path, pathPrefix, scope, prefixDepth) {
-  if (pathPrefix === '/') {
+function pathScopeOk(path, publicPrefix, scope, prefixDepth) {
+  if (publicPrefix === '/') {
     return scope === 'children' ? depthOf(path) === 1 : true;
   }
-  if (path !== pathPrefix && !path.startsWith(`${pathPrefix}/`)) return false;
+  if (path !== publicPrefix && !path.startsWith(`${publicPrefix}/`)) return false;
   return scope === 'children' ? depthOf(path) === prefixDepth + 1 : true;
 }
 
 // -------- Quelle 1: EDS (publizierte Seiten via query-index.json) --------
-function indexUrlFor(pathPrefix) {
-  const source = pathPrefix && pathPrefix !== '/' ? pathPrefix : window.location.pathname;
-  const seg = firstSeg(source) || 'en';
+function indexUrlFor(publicPrefix) {
+  const seg = firstSeg(publicPrefix !== '/' ? publicPrefix : window.location.pathname) || 'en';
   const path = `/${seg}/query-index.json`;
   return isEdsOrigin() ? path : `${EDS_ORIGIN}${path}`;
 }
 
-async function fromEds(pathPrefix, scope, prefixDepth) {
-  const json = await (await fetch(indexUrlFor(pathPrefix))).json();
+async function fromEds(publicPrefix, scope, prefixDepth) {
+  const json = await (await fetch(indexUrlFor(publicPrefix))).json();
   return (json.data || [])
-    .filter((p) => p.path && pathScopeOk(p.path, pathPrefix, scope, prefixDepth))
+    .filter((p) => p.path && pathScopeOk(p.path, publicPrefix, scope, prefixDepth))
     .map((p) => ({
       path: p.path,
       title: p.title || p.navTitle || p.path,
@@ -60,7 +68,7 @@ async function fromEds(pathPrefix, scope, prefixDepth) {
 }
 
 // -------- Quelle 2: Author (alle Seiten, auch unveröffentlicht) --------
-async function walk(nodePath, authorRoot, depthRemaining, out) {
+async function walk(nodePath, depthRemaining, out) {
   let json;
   try {
     const resp = await fetch(`${nodePath}.2.json`, { credentials: 'include' });
@@ -78,7 +86,7 @@ async function walk(nodePath, authorRoot, depthRemaining, out) {
     const content = node['jcr:content'] || {};
     const childPath = `${nodePath}/${key}`;
     out.push({
-      path: childPath.replace(authorRoot, ''),
+      path: childPath.replace(AEM_SITE_ROOT, ''),
       title: content['jcr:title'] || key,
       description: content['jcr:description'] || '',
       tags: content['cq:tags'] || [],
@@ -88,38 +96,48 @@ async function walk(nodePath, authorRoot, depthRemaining, out) {
 
   if (depthRemaining > 0) {
     await Promise.all(
-      childPages.map(({ key }) => walk(`${nodePath}/${key}`, authorRoot, depthRemaining - 1, out)),
+      childPages.map(({ key }) => walk(`${nodePath}/${key}`, depthRemaining - 1, out)),
     );
   }
 }
 
-async function fromAuthor(pathPrefix, scope) {
-  const lang = firstSeg(pathPrefix);
-  if (!lang) return null; // z. B. pathPrefix "/" -> im Author nicht sinnvoll auflösbar
-  const marker = `/${lang}/`;
-  const idx = window.location.pathname.indexOf(marker);
-  if (idx < 0) return null;
-  const authorRoot = window.location.pathname.slice(0, idx);
-  const authorBase = `${authorRoot}${pathPrefix}`;
+async function fromAuthor(rawPath, publicPrefix, scope) {
+  let authorBase;
+  if (rawPath.startsWith(AEM_SITE_ROOT)) {
+    authorBase = rawPath.replace(/\.html$/, '').replace(/\/$/, '');
+  } else if (publicPrefix && publicPrefix !== '/') {
+    authorBase = `${AEM_SITE_ROOT}${publicPrefix}`;
+  } else {
+    return null; // ganze Site im Author nicht sinnvoll auflösbar
+  }
   const out = [];
-  await walk(authorBase, authorRoot, scope === 'children' ? 0 : 6, out);
+  await walk(authorBase, scope === 'children' ? 0 : 6, out);
   return out;
 }
 
 export default async function decorate(block) {
-  // Config-Zeilen: 0 Titel, 1 Pfad, 2 Scope, 3 Tags, 4 Tag-Match, 5 Sortierung, 6 Limit
-  const cfg = [...block.children].map((row) => row.textContent.trim());
-  const title = cfg[0] || '';
-  let pathPrefix = (cfg[1] || '/').trim();
-  const scope = cfg[2] || 'descendants';
-  const filterTags = (cfg[3] || '')
-    .split(',').map((t) => t.trim().toLowerCase()).filter(Boolean);
-  const tagMatch = cfg[4] || 'any';
-  const sortBy = cfg[5] || 'newest';
-  const limit = parseInt(cfg[6], 10) || 0;
+  const rows = [...block.children];
+  const cellText = (i) => (rows[i]?.textContent || '').trim();
+  // Mehrfachwerte (z. B. Tag-Picker): einzelne Einträge sauber sammeln
+  const cellList = (i) => {
+    const row = rows[i];
+    if (!row) return [];
+    const els = [...row.querySelectorAll('p, li, a')].map((el) => el.textContent.trim());
+    const base = els.filter(Boolean).length ? els : (row.textContent || '').split(',');
+    return base.map((t) => t.trim().toLowerCase()).filter(Boolean);
+  };
 
-  if (pathPrefix.length > 1 && pathPrefix.endsWith('/')) pathPrefix = pathPrefix.slice(0, -1);
-  const prefixDepth = depthOf(pathPrefix);
+  // 0 Titel, 1 Pfad, 2 Scope, 3 Tags, 4 Tag-Match, 5 Sortierung, 6 Limit
+  const title = cellText(0);
+  const rawPath = cellText(1) || '/';
+  const publicPrefix = toPublic(rawPath);
+  const scope = cellText(2) || 'descendants';
+  const filterTags = cellList(3);
+  const tagMatch = cellText(4) || 'any';
+  const sortBy = cellText(5) || 'newest';
+  const limit = parseInt(cellText(6), 10) || 0;
+
+  const prefixDepth = depthOf(publicPrefix);
 
   block.textContent = '';
   if (title) {
@@ -133,19 +151,16 @@ export default async function decorate(block) {
   try {
     let entries = null;
 
-    // Author/UE zuerst (zeigt auch unveröffentlichte Seiten). Bei Bedarf Fallback auf EDS.
     if (isAuthor()) {
-      entries = await fromAuthor(pathPrefix, scope);
+      entries = await fromAuthor(rawPath, publicPrefix, scope);
     }
     if (!entries) {
-      entries = await fromEds(pathPrefix, scope, prefixDepth);
+      entries = await fromEds(publicPrefix, scope, prefixDepth);
     }
 
-    // aktuelle Seite nicht auflisten
     const here = window.location.pathname.replace(/\.html$/, '');
-    entries = entries.filter((e) => e.path && e.path !== here);
+    entries = entries.filter((e) => e.path && e.path !== here && e.path !== publicPrefix);
 
-    // Tag-Filter (Teilstring-Match)
     if (filterTags.length) {
       entries = entries.filter((e) => {
         const tags = normalizeTags(e.tags);
@@ -154,7 +169,6 @@ export default async function decorate(block) {
       });
     }
 
-    // Sortierung
     entries.sort((a, b) => {
       switch (sortBy) {
         case 'oldest': return a.date - b.date;
@@ -183,12 +197,12 @@ export default async function decorate(block) {
 
     if (!entries.length) {
       const empty = document.createElement('p');
-      empty.textContent = 'Keine Seiten gefunden.';
+      empty.textContent = 'No pages found.';
       ul.append(empty);
     }
   } catch (e) {
     const err = document.createElement('p');
-    err.textContent = 'Liste konnte nicht geladen werden.';
+    err.textContent = 'Could not load the list.';
     ul.append(err);
   }
 
