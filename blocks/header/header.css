@@ -1,9 +1,13 @@
 /* header and nav layout */
+/* Static (not fixed): the visible bar flows inside the position:sticky <header>
+   (see styles/styles.css) so the header reserves its real height and nothing
+   overlaps the hero. Making this fixed again would pull the bar back out of
+   flow and re-introduce the overlap. */
 header .nav-wrapper {
   background-color: var(--dark-color-opacity);
   width: 100%;
   z-index: 2;
-  position: fixed;
+  position: static;
   border-top: 4px solid var(--main-accent-color);
 }
 
