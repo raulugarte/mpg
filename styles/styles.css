@@ -393,13 +393,18 @@ body.blue-theme header .nav-wrapper nav .nav-sections ul > li > a:hover{
   color: var(--text-light);
 }
 /*theme header-footer*/
+/* The header is position:sticky (not fixed): it stays pinned to the top while
+   scrolling but still reserves its own height in the normal flow, so the first
+   section (e.g. the hero) starts below it instead of being hidden behind it.
+   This is height-independent - no manual offset to keep in sync with the bar
+   height. height:auto lets the bar wrap its content (nav + 4px accent border)
+   exactly. Requires .nav-wrapper to be static (see blocks/header/header.css)
+   so the visible bar flows inside this element rather than floating out. */
 header {
-  height: var(--nav-height);
+  height: auto;
   min-height: 90px;
-  position: fixed;
+  position: sticky;
   top: 0;
-  left: 0;
-  right: 0;
   z-index: 111;
 }
 
