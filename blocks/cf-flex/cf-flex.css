@@ -1,5 +1,5 @@
 /* CF Flex – modellübergreifender Content-Fragment-Block.
-   Funktioniert mit und ohne Bild (FAQ ohne Bild) und mit/ohne CTA. */
+   Echtes <img> + Flexbox; funktioniert mit und ohne Bild (FAQ) und mit/ohne CTA. */
 
 .cf-flex-container .cf-flex-wrapper {
   width: 100%;
@@ -8,12 +8,30 @@
 }
 
 .cf-flex-wrapper .cff-content {
+  display: flex;
+  align-items: stretch;
   width: 100%;
+  min-height: 400px;
+  overflow: hidden;
 }
 
-/* Basis: Textbereich */
+/* Bild */
+.cf-flex-wrapper .cff-media {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+.cf-flex-wrapper .cff-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Textbereich */
 .cf-flex-wrapper .cff-detail {
   box-sizing: border-box;
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -56,9 +74,9 @@
 .cf-flex-wrapper .cff-text :first-child { margin-top: 0; }
 .cf-flex-wrapper .cff-text :last-child { margin-bottom: 0; }
 
-.cf-flex-wrapper .cff-detail .button-container {
-  margin: 24px 0 0;
-}
+.cf-flex-wrapper .cff-detail .button-container { margin: 24px 0 0; }
+
+.cf-flex-wrapper .cff-empty { color: #666; font-style: italic; }
 
 /* --- Alignment --- */
 .cf-flex-wrapper .cff-detail.text-left { text-align: left; align-items: flex-start; }
@@ -68,88 +86,36 @@
 .cf-flex-wrapper .cff-detail.text-center .cff-title::after { margin-left: auto; margin-right: auto; }
 .cf-flex-wrapper .cff-detail.text-right .cff-title::after { margin-left: auto; margin-right: 0; }
 
-/* --- Layouts mit Bild --- */
-/* Image Left / Right: Bild als Hälfte, Text daneben */
-.cf-flex-wrapper .cff-content.image-left,
-.cf-flex-wrapper .cff-content.image-right {
-  display: flex;
-  align-items: stretch;
-  min-height: 400px;
-  background-size: cover;
-  background-repeat: no-repeat;
-  position: relative;
-}
+/* --- Layout-Varianten --- */
+/* Image Left = Standard (Bild links, Text rechts) */
+.cf-flex-wrapper .cff-content.image-left { flex-direction: row; }
 
-.cf-flex-wrapper .cff-content.image-left { background-position: left center; }
-.cf-flex-wrapper .cff-content.image-right { background-position: right center; }
+/* Image Right (Bild rechts, Text links) */
+.cf-flex-wrapper .cff-content.image-right { flex-direction: row-reverse; }
 
-.cf-flex-wrapper .cff-content.image-left::before,
-.cf-flex-wrapper .cff-content.image-right::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  width: 50%;
-  height: 100%;
-  background: inherit;
-  background-size: cover;
-  background-position: center;
-  z-index: 1;
-}
+/* Image Top (Bild oben, Text unten) */
+.cf-flex-wrapper .cff-content.image-top { flex-direction: column; }
+.cf-flex-wrapper .cff-content.image-top .cff-media { flex-basis: auto; max-width: 100%; }
+.cf-flex-wrapper .cff-content.image-top .cff-image { max-height: 360px; }
 
-.cf-flex-wrapper .cff-content.image-left::before { left: 0; }
-.cf-flex-wrapper .cff-content.image-right::before { right: 0; }
+/* Image Bottom (Text oben, Bild unten) */
+.cf-flex-wrapper .cff-content.image-bottom { flex-direction: column-reverse; }
+.cf-flex-wrapper .cff-content.image-bottom .cff-media { flex-basis: auto; max-width: 100%; }
+.cf-flex-wrapper .cff-content.image-bottom .cff-image { max-height: 360px; }
 
-.cf-flex-wrapper .cff-content.image-left .cff-detail,
-.cf-flex-wrapper .cff-content.image-right .cff-detail {
-  flex: 1;
-  position: relative;
-  z-index: 2;
-}
-
-.cf-flex-wrapper .cff-content.image-left .cff-detail { margin-left: 50%; }
-.cf-flex-wrapper .cff-content.image-right .cff-detail { margin-right: 50%; }
-
-/* Image Top / Bottom */
-.cf-flex-wrapper .cff-content.image-top,
-.cf-flex-wrapper .cff-content.image-bottom {
-  display: flex;
-  flex-direction: column;
-  min-height: 400px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  position: relative;
-}
-
-.cf-flex-wrapper .cff-content.image-top { background-position: center top; }
-.cf-flex-wrapper .cff-content.image-bottom { background-position: center bottom; }
-
-.cf-flex-wrapper .cff-content.image-top .cff-detail { margin-top: 40%; }
-.cf-flex-wrapper .cff-content.image-bottom .cff-detail { margin-bottom: 40%; }
+/* Ohne Bild: Text nimmt volle Breite */
+.cf-flex-wrapper .cff-content.no-image { min-height: 0; }
+.cf-flex-wrapper .cff-content.no-image .cff-detail { flex: 1 1 100%; }
 
 /* --- Responsive --- */
 @media (width < 1024px) {
   .cf-flex-wrapper .cff-content.image-left,
-  .cf-flex-wrapper .cff-content.image-right,
-  .cf-flex-wrapper .cff-content.image-top,
-  .cf-flex-wrapper .cff-content.image-bottom {
+  .cf-flex-wrapper .cff-content.image-right {
     flex-direction: column;
-    background-position: center top;
   }
-
-  .cf-flex-wrapper .cff-content.image-left::before,
-  .cf-flex-wrapper .cff-content.image-right::before {
-    position: relative;
-    width: 100%;
-    height: 260px;
-  }
-
-  .cf-flex-wrapper .cff-content.image-left .cff-detail,
-  .cf-flex-wrapper .cff-content.image-right .cff-detail,
-  .cf-flex-wrapper .cff-content.image-top .cff-detail,
-  .cf-flex-wrapper .cff-content.image-bottom .cff-detail {
-    margin: 0;
-    padding: 40px 20px;
-  }
+  .cf-flex-wrapper .cff-media { flex-basis: auto; max-width: 100%; }
+  .cf-flex-wrapper .cff-image { max-height: 300px; }
+  .cf-flex-wrapper .cff-detail { padding: 40px 20px; }
 }
 
 @media (width < 768px) {
