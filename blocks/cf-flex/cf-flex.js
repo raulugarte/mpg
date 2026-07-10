@@ -1,9 +1,13 @@
-import { getMetadata } from '../../scripts/aem.js';
 import { isAuthorEnvironment } from '../../scripts/scripts.js';
-import { getHostname, mapAemPathToSitePath } from '../../scripts/utils.js';
+import { mapAemPathToSitePath } from '../../scripts/utils.js';
 
 /* Wrapper-Service für die Live-Auslieferung (wie im bestehenden content-fragment Block) */
 const WRAPPER_SERVICE_URL = 'https://3635370-refdemoapigateway-stage.adobeioruntime.net/api/v1/web/ref-demo-api-gateway/fetch-cf';
+
+/* Feste AEM-Instanz-Hosts (getHostname()/Placeholder liefert hier eine falsche
+   Instanz, deshalb verlässliche Konstanten für diese Demo-Umgebung). */
+const AEM_AUTHOR_HOST = 'https://author-p130407-e1279066.adobeaemcloud.com';
+const AEM_PUBLISH_HOST = 'https://publish-p130407-e1279066.adobeaemcloud.com';
 
 /* Modell-Zuordnung: pro CF-Modell die passende Persisted Query + Feldnamen (= echte CF-Feldnamen). */
 const MODEL_MAP = {
@@ -110,10 +114,9 @@ async function runQuery(queryPath, contentPath, variation, isAuthor, authorUrl, 
 }
 
 export default async function decorate(block) {
-  const hostnameFromPlaceholders = await getHostname();
-  const hostname = hostnameFromPlaceholders || getMetadata('hostname');
-  const authorUrl = getMetadata('authorurl') || '';
-  const publishUrl = hostname?.replace('author', 'publish')?.replace(/\/$/, '') || '';
+  // Feste Instanz-Hosts verwenden (getHostname liefert hier eine falsche Instanz)
+  const authorUrl = AEM_AUTHOR_HOST;
+  const publishUrl = AEM_PUBLISH_HOST;
   const isAuthor = isAuthorEnvironment();
 
   const contentPath = block.querySelector(':scope div:nth-child(1) > div a')?.textContent?.trim();
