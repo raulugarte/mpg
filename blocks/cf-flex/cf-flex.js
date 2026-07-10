@@ -53,11 +53,23 @@ function stripInlineStyles(html) {
   return doc.body.innerHTML;
 }
 
-/* Bild-URL je Umgebung wählen */
-function imageUrl(imgObj, isAuthor) {
+/* Bild-URL je Umgebung wählen.
+   Author: _authorUrl (direkt sichtbar im Canvas).
+   Live: _dynamicUrl (Dynamic Media). _dynamicUrl ist relativ
+   (/adobe/dynamicmedia/deliver/...) und wird gegen den Publish-Host absolut gemacht. */
+function imageUrl(imgObj, isAuthor, publishUrl) {
   if (!imgObj) return '';
-  return (isAuthor ? imgObj._authorUrl : imgObj._publishUrl)
-    || imgObj._publishUrl || imgObj._authorUrl || imgObj._dynamicUrl || '';
+  if (isAuthor) {
+    return imgObj._authorUrl || imgObj._dynamicUrl || imgObj._publishUrl || '';
+  }
+  // Live: Dynamic Media bevorzugen
+  const dyn = imgObj._dynamicUrl || '';
+  if (dyn) {
+    if (/^https?:\/\//i.test(dyn)) return dyn; // schon absolut
+    const base = (publishUrl || '').replace(/\/$/, '');
+    return `${base}${dyn.startsWith('/') ? '' : '/'}${dyn}`;
+  }
+  return imgObj._dmS7Url || imgObj._publishUrl || imgObj._authorUrl || '';
 }
 
 /* Text als HTML (main/content/answer = {html}) oder plaintext (description) */
@@ -153,7 +165,7 @@ export default async function decorate(block) {
   const title = item[f.title] || '';
   const subtitle = f.subtitle ? (item[f.subtitle] || '') : '';
   const textHtml = textToHtml(item[f.text]);
-  const imgUrl = f.image ? imageUrl(item[f.image], isAuthor) : '';
+  const imgUrl = f.image ? imageUrl(item[f.image], isAuthor, publishUrl) : '';
 
   // CTA (nur bei Modellen mit CTA)
   let ctaHref = '';
