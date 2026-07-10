@@ -10,6 +10,7 @@ const MODEL_MAP = {
   '/conf/ref-demo-eds/settings/dam/cfm/models/cta': {
     query: '/graphql/execute.json/ref-demo-eds/CTAByPath',
     key: 'ctaByPath',
+    typename: 'CtaModel',
     fields: {
       image: 'bannerimage', title: 'title', subtitle: 'subtitle', text: 'description', ctaUrl: 'ctaurl', ctaLabel: 'ctalabel',
     },
@@ -17,26 +18,31 @@ const MODEL_MAP = {
   '/conf/ref-demo-eds/settings/dam/cfm/models/article': {
     query: '/graphql/execute.json/ref-demo-eds/ArticleByPath',
     key: 'articleByPath',
+    typename: 'ArticleModel',
     fields: { image: 'featuredImage', title: 'title', text: 'main' },
   },
   '/conf/ref-demo-eds/settings/dam/cfm/models/blog-article': {
     query: '/graphql/execute.json/ref-demo-eds/BlogArticleByPath',
     key: 'blogArticleByPath',
+    typename: 'BlogArticleModel',
     fields: { image: 'image', title: 'title', text: 'content' },
   },
   '/conf/ref-demo-eds/settings/dam/cfm/models/faq': {
     query: '/graphql/execute.json/ref-demo-eds/FaqByPath',
     key: 'faqByPath',
+    typename: 'FaqModel',
     fields: { title: 'question', text: 'answer' },
   },
 };
 
-/* Reihenfolge, in der Modelle probiert werden, bis eine Query ein Item liefert */
+/* Reihenfolge, in der Modelle probiert werden, bis eine Query ein Item liefert.
+   CTA steht bewusst zuletzt: CTAByPath liefert für viele Pfade ein (leeres) Item,
+   deshalb müssen die spezifischen Modelle zuerst über _model._path matchen. */
 const PROBE_ORDER = [
-  '/conf/ref-demo-eds/settings/dam/cfm/models/cta',
   '/conf/ref-demo-eds/settings/dam/cfm/models/article',
   '/conf/ref-demo-eds/settings/dam/cfm/models/blog-article',
   '/conf/ref-demo-eds/settings/dam/cfm/models/faq',
+  '/conf/ref-demo-eds/settings/dam/cfm/models/cta',
 ];
 
 /* AEM-Inline-Styles entfernen, damit das eigene CSS greift */
@@ -106,7 +112,9 @@ export default async function decorate(block) {
   block.innerHTML = '';
   if (!contentPath) return;
 
-  // Modell erkennen: Queries der Reihe nach probieren
+  // Modell erkennen: Query probieren UND prüfen, dass das zurückgegebene
+  // Item wirklich zum erwarteten Modell gehört. Wichtig, weil CTAByPath
+  // für jeden Pfad ein (leeres) Item liefert und sonst fälschlich matcht.
   let item = null;
   let mapping = null;
   let matchedKey = '';
@@ -116,7 +124,14 @@ export default async function decorate(block) {
     // eslint-disable-next-line no-await-in-loop
     const json = await runQuery(m.query, contentPath, variation, isAuthor, authorUrl, publishUrl);
     const candidate = json?.data?.[m.key]?.item;
-    if (candidate) { item = candidate; mapping = m; matchedKey = m.key; break; }
+    if (!candidate) continue;
+    // Modell des Items ermitteln (bevorzugt _model._path, ersatzweise __typename)
+    const returnedModelPath = candidate?._model?._path || '';
+    const typename = candidate?.__typename || '';
+    const modelOk = returnedModelPath
+      ? returnedModelPath === modelPath
+      : typename === m.typename; // Fallback, wenn Query kein _model liefert
+    if (modelOk) { item = candidate; mapping = m; matchedKey = m.key; break; }
   }
 
   if (isAuthor) {
