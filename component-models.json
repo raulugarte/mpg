@@ -457,6 +457,81 @@
     ]
   },
   {
+    "id": "cf-flex",
+    "fields": [
+      {
+        "component": "aem-content-fragment",
+        "name": "reference",
+        "label": "Content Fragment Picker",
+        "valueType": "string",
+        "required": true,
+        "variationName": "contentFragmentVariation"
+      },
+      {
+        "component": "text",
+        "name": "contentFragmentVariation",
+        "label": "Selected Variation",
+        "value": "",
+        "valueType": "string",
+        "description": "Persisted variation for publish; leave empty for master.",
+        "condition": {
+          "==": [
+            {
+              "var": "__alwaysFalse"
+            },
+            true
+          ]
+        }
+      },
+      {
+        "component": "select",
+        "name": "displaystyle",
+        "label": "Style",
+        "options": [
+          {
+            "name": "Default",
+            "value": ""
+          },
+          {
+            "name": "Image Left",
+            "value": "image-left"
+          },
+          {
+            "name": "Image Right",
+            "value": "image-right"
+          },
+          {
+            "name": "Image Top",
+            "value": "image-top"
+          },
+          {
+            "name": "Image Bottom",
+            "value": "image-bottom"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "alignment",
+        "label": "Alignment",
+        "options": [
+          {
+            "name": "Text Left",
+            "value": "text-left"
+          },
+          {
+            "name": "Text Center",
+            "value": "text-center"
+          },
+          {
+            "name": "Text Right",
+            "value": "text-right"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "columns",
     "fields": [
       {

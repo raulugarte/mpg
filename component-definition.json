@@ -171,6 +171,21 @@
           }
         },
         {
+          "title": "CF Flex",
+          "id": "cf-flex",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block",
+                "template": {
+                  "name": "CF Flex",
+                  "model": "cf-flex"
+                }
+              }
+            }
+          }
+        },
+        {
           "title": "Columns",
           "id": "columns",
           "plugins": {

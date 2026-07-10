@@ -1,0 +1,158 @@
+/* CF Flex – modellübergreifender Content-Fragment-Block.
+   Funktioniert mit und ohne Bild (FAQ ohne Bild) und mit/ohne CTA. */
+
+.cf-flex-container .cf-flex-wrapper {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.cf-flex-wrapper .cff-content {
+  width: 100%;
+}
+
+/* Basis: Textbereich */
+.cf-flex-wrapper .cff-detail {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px;
+  background: var(--light-color, #eee);
+  color: var(--text-color, #131313);
+}
+
+.cf-flex-wrapper .cff-title {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.3;
+  font-family: var(--heading-font-family);
+  color: var(--text-color, #131313);
+}
+
+.cf-flex-wrapper .cff-title::after {
+  background-color: var(--main-accent-color, #116656);
+  content: "";
+  display: block;
+  height: 5px;
+  width: 128px;
+  margin: 10px 0;
+}
+
+.cf-flex-wrapper .cff-subtitle {
+  margin: 8px 0 0;
+  font-size: 20px;
+  line-height: 1.4;
+  font-family: var(--heading-font-family);
+  color: #666;
+}
+
+.cf-flex-wrapper .cff-text {
+  margin: 20px 0 0;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.cf-flex-wrapper .cff-text :first-child { margin-top: 0; }
+.cf-flex-wrapper .cff-text :last-child { margin-bottom: 0; }
+
+.cf-flex-wrapper .cff-detail .button-container {
+  margin: 24px 0 0;
+}
+
+/* --- Alignment --- */
+.cf-flex-wrapper .cff-detail.text-left { text-align: left; align-items: flex-start; }
+.cf-flex-wrapper .cff-detail.text-center { text-align: center; align-items: center; }
+.cf-flex-wrapper .cff-detail.text-right { text-align: right; align-items: flex-end; }
+
+.cf-flex-wrapper .cff-detail.text-center .cff-title::after { margin-left: auto; margin-right: auto; }
+.cf-flex-wrapper .cff-detail.text-right .cff-title::after { margin-left: auto; margin-right: 0; }
+
+/* --- Layouts mit Bild --- */
+/* Image Left / Right: Bild als Hälfte, Text daneben */
+.cf-flex-wrapper .cff-content.image-left,
+.cf-flex-wrapper .cff-content.image-right {
+  display: flex;
+  align-items: stretch;
+  min-height: 400px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.cf-flex-wrapper .cff-content.image-left { background-position: left center; }
+.cf-flex-wrapper .cff-content.image-right { background-position: right center; }
+
+.cf-flex-wrapper .cff-content.image-left::before,
+.cf-flex-wrapper .cff-content.image-right::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: inherit;
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+}
+
+.cf-flex-wrapper .cff-content.image-left::before { left: 0; }
+.cf-flex-wrapper .cff-content.image-right::before { right: 0; }
+
+.cf-flex-wrapper .cff-content.image-left .cff-detail,
+.cf-flex-wrapper .cff-content.image-right .cff-detail {
+  flex: 1;
+  position: relative;
+  z-index: 2;
+}
+
+.cf-flex-wrapper .cff-content.image-left .cff-detail { margin-left: 50%; }
+.cf-flex-wrapper .cff-content.image-right .cff-detail { margin-right: 50%; }
+
+/* Image Top / Bottom */
+.cf-flex-wrapper .cff-content.image-top,
+.cf-flex-wrapper .cff-content.image-bottom {
+  display: flex;
+  flex-direction: column;
+  min-height: 400px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.cf-flex-wrapper .cff-content.image-top { background-position: center top; }
+.cf-flex-wrapper .cff-content.image-bottom { background-position: center bottom; }
+
+.cf-flex-wrapper .cff-content.image-top .cff-detail { margin-top: 40%; }
+.cf-flex-wrapper .cff-content.image-bottom .cff-detail { margin-bottom: 40%; }
+
+/* --- Responsive --- */
+@media (width < 1024px) {
+  .cf-flex-wrapper .cff-content.image-left,
+  .cf-flex-wrapper .cff-content.image-right,
+  .cf-flex-wrapper .cff-content.image-top,
+  .cf-flex-wrapper .cff-content.image-bottom {
+    flex-direction: column;
+    background-position: center top;
+  }
+
+  .cf-flex-wrapper .cff-content.image-left::before,
+  .cf-flex-wrapper .cff-content.image-right::before {
+    position: relative;
+    width: 100%;
+    height: 260px;
+  }
+
+  .cf-flex-wrapper .cff-content.image-left .cff-detail,
+  .cf-flex-wrapper .cff-content.image-right .cff-detail,
+  .cf-flex-wrapper .cff-content.image-top .cff-detail,
+  .cf-flex-wrapper .cff-content.image-bottom .cff-detail {
+    margin: 0;
+    padding: 40px 20px;
+  }
+}
+
+@media (width < 768px) {
+  .cf-flex-wrapper .cff-detail { padding: 30px 16px; }
+  .cf-flex-wrapper .cff-title { font-size: 24px; }
+}
