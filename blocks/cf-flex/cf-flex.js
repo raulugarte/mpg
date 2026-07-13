@@ -37,6 +37,14 @@ const MODEL_MAP = {
     typename: 'FaqModel',
     fields: { title: 'question', text: 'answer' },
   },
+  '/conf/ref-demo-eds/settings/dam/cfm/models/research-highlight': {
+    query: '/graphql/execute.json/ref-demo-eds/ResearchHighlightByPath',
+    key: 'researchHighlightByPath',
+    typename: 'ResearchHighlightModel',
+    fields: {
+      image: 'heroImage', title: 'title', subtitle: 'teaser', text: 'body', ctaUrl: 'ctaUrl', ctaLabel: 'ctaLabel',
+    },
+  },
 };
 
 /* Reihenfolge, in der Modelle probiert werden, bis eine Query ein Item liefert.
@@ -46,6 +54,7 @@ const PROBE_ORDER = [
   '/conf/ref-demo-eds/settings/dam/cfm/models/article',
   '/conf/ref-demo-eds/settings/dam/cfm/models/blog-article',
   '/conf/ref-demo-eds/settings/dam/cfm/models/faq',
+  '/conf/ref-demo-eds/settings/dam/cfm/models/research-highlight',
   '/conf/ref-demo-eds/settings/dam/cfm/models/cta',
 ];
 
@@ -83,6 +92,13 @@ function textToHtml(value) {
   if (value.html) return stripInlineStyles(value.html);
   if (value.plaintext) return `<p>${value.plaintext}</p>`;
   return '';
+}
+
+/* Reinen Text liefern, egal ob Feld ein String oder ein {plaintext}-Objekt ist */
+function plainText(value) {
+  if (!value) return '';
+  if (typeof value === 'string') return value;
+  return value.plaintext || '';
 }
 
 /* Eine Persisted Query aufrufen (Author: direkt GET; Live: über Wrapper POST) */
@@ -166,7 +182,7 @@ export default async function decorate(block) {
 
   const f = mapping.fields;
   const title = item[f.title] || '';
-  const subtitle = f.subtitle ? (item[f.subtitle] || '') : '';
+  const subtitle = f.subtitle ? plainText(item[f.subtitle]) : '';
   const textHtml = textToHtml(item[f.text]);
   const imgUrl = f.image ? imageUrl(item[f.image], isAuthor, publishUrl) : '';
 
