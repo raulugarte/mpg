@@ -6603,23 +6603,6 @@
         ]
       },
       {
-        "component": "select",
-        "name": "teaserStyle",
-        "value": "image",
-        "label": "Style",
-        "valueType": "string",
-        "options": [
-          {
-            "name": "Video",
-            "value": "video"
-          },
-          {
-            "name": "Image",
-            "value": "image"
-          }
-        ]
-      },
-      {
         "component": "container",
         "label": "Video Properties",
         "name": "videoProperties",

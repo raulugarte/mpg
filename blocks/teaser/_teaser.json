@@ -40,17 +40,6 @@
           ]
         },
         {
-          "component": "select",
-          "name": "teaserStyle",
-          "value": "image",
-          "label": "Style",
-          "valueType": "string",
-          "options": [
-            { "name": "Video", "value": "video" },
-            { "name": "Image", "value": "image" }
-          ]
-        },
-        {
           "component": "container",
           "label": "Video Properties",
           "name": "videoProperties",
@@ -129,26 +118,14 @@
               "valueType": "string",
               "value": "button",
               "options": [
-                {
-                  "name": "Default Button",
-                  "value": "default"
-                },
-                {
-                  "name": "Primary Button",
-                  "value": "button"
-                },
-                {
-                  "name": "Secondary Button",
-                  "value": "button-secondary"
-                },
-                {
-                  "name": "Dark Button",
-                  "value": "button-dark"
-                }
+                { "name": "Default Button", "value": "default" },
+                { "name": "Primary Button", "value": "button" },
+                { "name": "Secondary Button", "value": "button-secondary" },
+                { "name": "Dark Button", "value": "button-dark" }
               ]
             }
           ]
-        },        
+        },
         {
           "component": "boolean",
           "label": "Enable Swoosh Effect",

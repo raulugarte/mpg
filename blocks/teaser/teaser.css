@@ -1,4 +1,3 @@
-
 .teaser-wrapper {
     width: 100%;
 }
@@ -10,6 +9,8 @@
     height: 538px;
     position: relative;
     align-items: center;
+    overflow: hidden;
+    border-radius: 10px;
 }
 
 .teaser-wrapper .inactive {
@@ -17,13 +18,27 @@
     visibility: hidden;
 }
 
-.teaser-wrapper .background-image, .teaser-wrapper .video-container {
+.teaser-wrapper .background-image,
+.teaser-wrapper .video-container {
     width: 100%;
     position: absolute;
+    inset: 0;
     height: 482px;
+    overflow: hidden;
+    border-radius: 10px;
 }
 
-.teaser-wrapper .video-container .video-play-btn, .teaser-wrapper .video-container .video-pause-btn {
+.teaser-wrapper .background-image .teaser-background,
+.teaser-wrapper video {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+.teaser-wrapper .video-container .video-play-btn,
+.teaser-wrapper .video-container .video-pause-btn {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -39,37 +54,28 @@
     border: 2px solid transparent;
 }
 
-.video-container .video-play:hover, .video-container .video-pause:hover {
+.video-container .video-play:hover,
+.video-container .video-pause:hover {
     border-color: #169af3;
 }
 
 html[dir="rtl"] .teaser-wrapper .video-container .video-play .video-play-btn,
-html[dir="rtl"] .teaser-wrapper .video-container .video-pause .video-pause-btn{
+html[dir="rtl"] .teaser-wrapper .video-container .video-pause .video-pause-btn {
     right: 20px;
     left: unset;
 }
 
-.video-container .video-play .controls, .video-container .video-pause .controls {
+.video-container .video-play .controls,
+.video-container .video-pause .controls {
     filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(313deg) brightness(120%) contrast(100%);
 }
-    
+
 .video-container .video-pause .controls.pause-icon {
     height: 34px;
 }
-    
-.teaser-wrapper video {
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-    object-position: center;
-    border-radius: 10px;
-}
 
 .teaser-wrapper .teaser-background {
-    height: 100%;
-    width: 100%;
     position: relative;
-    border-radius: 10px;
 }
 
 .teaser-wrapper .teaser-title-wrapper {
@@ -90,7 +96,7 @@ html[dir="rtl"] .teaser-wrapper .video-container .video-pause .video-pause-btn{
     color: var(--text-light);
     text-align: center;
     padding-top: 15%;
-    text-transform:uppercase;
+    text-transform: uppercase;
     font-weight: normal;
     margin: 0;
     line-height: 40px;
@@ -101,7 +107,6 @@ html[lang="ru"] .teaser-wrapper .teaser-title {
     font-size: 1.5rem;
     max-width: 275px;
 }
-
 
 .teaser-wrapper .button-container {
     padding: 15px 0 32px;
@@ -125,18 +130,18 @@ html[lang="ru"] .teaser-wrapper .button-container > a {
     align-content: center;
 }
 
-.teaser-wrapper .teaser-swoosh-wrapper a, 
+.teaser-wrapper .teaser-swoosh-wrapper a,
 .teaser-wrapper .teaser-swoosh-wrapper a.button:any-link,
 .teaser-wrapper .teaser-swoosh-wrapper button {
     color: var(--text-light);
 }
+
 .teaser-wrapper .teaser-swoosh-wrapper a::after,
 .teaser-wrapper .teaser-swoosh-wrapper a.button::after,
 .teaser-wrapper .teaser-swoosh-wrapper button::after {
     color: var(--text-light);
 }
 
-/* Button hover styles for teaser with dark background */
 .teaser-wrapper .teaser-swoosh-wrapper .cta-button a.button:hover {
     background-color: rgba(255, 255, 255, 0.1) !important;
     color: var(--text-light) !important;
@@ -147,7 +152,6 @@ html[lang="ru"] .teaser-wrapper .button-container > a {
 .teaser-wrapper .teaser-swoosh-wrapper .cta-button a.button:hover::after {
     color: var(--text-light) !important;
 }
-
 
 .teaser-wrapper .swoosh-layers {
     position: relative;
@@ -199,10 +203,10 @@ html[lang="ru"] .teaser-wrapper .button-container > a {
     display: none;
 }
 
-/*button style*/
-.teaser-wrapper .teaser-swoosh-wrapper .cta-button-dark a.button{
+.teaser-wrapper .teaser-swoosh-wrapper .cta-button-dark a.button {
     color: var(--dark-color);
 }
+
 .teaser-wrapper .teaser-swoosh-wrapper .cta-button-dark a.button::after {
     content: "\f105";
     font-family: 'Font Awesome 5 Solid';
@@ -212,7 +216,6 @@ html[lang="ru"] .teaser-wrapper .button-container > a {
     transition: all 0.3s ease;
 }
 
-/* Responsive Styles */
 @media (width < 1024px) {
     .teaser-wrapper .teaser-swoosh-wrapper {
         margin-right: 16px;
@@ -223,9 +226,9 @@ html[lang="ru"] .teaser-wrapper .button-container > a {
     .teaser-wrapper .teaser-title {
         padding: 19% 12% 0;
     }
-    
+
     .teaser-wrapper .teaser-title-wrapper {
-     width: 60%;
+        width: 60%;
     }
 }
 
@@ -288,7 +291,6 @@ html[lang="ru"] .teaser-wrapper .button-container > a {
     .teaser-wrapper .button-container {
         padding: 15px 0 32px;
     }
-
 }
 
 @media (width <= 390px) {
@@ -296,11 +298,11 @@ html[lang="ru"] .teaser-wrapper .button-container > a {
         padding: 0;
         margin-top: 0;
     }
-    
+
     .teaser-wrapper {
         padding: 0;
     }
-    
+
     .teaser-wrapper .teaser-title {
         font-size: 22px;
     }
@@ -331,5 +333,4 @@ html[lang="ru"] .teaser-wrapper .button-container > a {
         height: 425px;
         width: 425px;
     }
-    
 }
