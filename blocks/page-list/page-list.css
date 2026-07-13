@@ -40,7 +40,7 @@
   font-size: 16px;
 }
 
-.page-list .page-list-description {
+.page-list li p {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
